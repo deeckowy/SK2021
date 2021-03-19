@@ -1,6 +1,6 @@
 main:
-	g++ -c tracerute.cpp inits.hpp inits.cpp
-	g++ -o tracerute tracerute.o inits.o
+	g++ -c -Wall -Werror -Wextra *.cpp *.hpp
+	g++ -o tracerute *.o
 clean:
+	rm *.o *.gch
 	rm tracerute
-	rm tracerute.o
