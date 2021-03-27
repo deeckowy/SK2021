@@ -40,7 +40,6 @@ void traceroute(int sockfd,std::string &ip)
             std::cout<<"???"<<std::endl;
         else 
             print_avg_time(times);
-        
         if(dest_reached)
             return;
     }
