@@ -30,7 +30,7 @@ bool is_current(int seq,int ttl)
 
 int validate_addr(std::string ip_addr)
 {
-	//i've stolen regex from https://www.geeksforgeeks.org/how-to-validate-an-ip-address-using-regex/
+	//regex from https://www.geeksforgeeks.org/how-to-validate-an-ip-address-using-regex/
 	//mainly for this i've choosen c++ instead of c 
     auto rgx=std::regex("(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])");
     return std::regex_match(ip_addr,rgx);
@@ -58,6 +58,8 @@ int is_ready(int sockfd,struct timeval *t)
 		return ready;
 }
 
+//check if packet is a valid current packet 
+//if yes then return ip as string
 std::string *read_packets(int sockfd,int ttl,bool *dest_reached)
 {
 	struct sockaddr_in sender;
@@ -68,7 +70,7 @@ std::string *read_packets(int sockfd,int ttl,bool *dest_reached)
 	if(packet_len<0)
 		panic("Packet reading error: ",true);
 	char ip_str[20];    
- 
+
 	inet_ntop (AF_INET, &(sender.sin_addr), ip_str, sizeof(ip_str));
 	struct ip* ip_header = (struct ip*)buffer;
 	ssize_t ip_header_size  = 4 * ip_header->ip_hl;
@@ -92,14 +94,14 @@ void print_ips(std::string *ips,int i)
 {
 	if(i==0)
 		return;
-	int x=0;
-	std::cout<<ips[x]<<" ";
-	x++;
-	if(x<i&&ips[x].compare(ips[x-1])!=0)
-		std::cout<<ips[x]<<" ";
-	x++;
-	if(x<i&&(ips[x].compare(ips[x-1])!=0||ips[x].compare(ips[x-2])!=0))
-		std::cout<<ips[x]<<" ";
+	int idx=0;
+	std::cout<<ips[idx]<<" ";
+	idx++;
+	if(idx<i&&ips[idx].compare(ips[idx-1])!=0)
+		std::cout<<ips[idx]<<" ";
+	idx++;
+	if(idx<i&&(ips[idx].compare(ips[idx-1])!=0||ips[idx].compare(ips[idx-2])!=0))
+		std::cout<<ips[idx]<<" ";
 }
 
 void print_avg_time(struct timeval *times)
