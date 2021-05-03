@@ -1,13 +1,14 @@
 #ifndef _UTILS_HPP_
 #define _UTILS_HPP_
-#include <iostream>
+
 #include <regex>
 #include <cerrno>
 #include <cstring>
+#include <iostream>
 #include <sys/socket.h>
 
-[[noreturn]]void panic(std::string msg,bool use_errno);
-int validate_addr(std::string ip_addr);
-
+[[noreturn]]void panic(const std::string& msg,bool use_errno);
+int validate_addr(const std::string& ip_addr);
+int send_pckt(std::string &msg,struct sockaddr_in *server);
 
 #endif
