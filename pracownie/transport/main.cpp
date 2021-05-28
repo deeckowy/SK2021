@@ -1,14 +1,13 @@
 #include <iostream>
 #include "utils.hpp"
 #include "inits.hpp"
+#include "transport.hpp"
 
 int main(int argc,char **argv)
 {
-    if(argc!=4)
-        panic("Usage: "+argv[0]+" <IPv4 addr> <port> <file_name> <size of data>");
+    if(argc!=5)
+        panic("Usage: "+std::string(argv[0])+" <IPv4 addr> <port> <file_name> <size of data>",false);
     
-    //checking correctness of user's data and creating 
-    //most important variables 
     std::string ip_addr(argv[1]);
     if(!validate_addr(ip_addr))
         panic("Invalid ip addr! ",false);
@@ -21,15 +20,18 @@ int main(int argc,char **argv)
     if(data_size==0)
         panic("Invalid data size !",false);
 
-    //initializing descriptors and data structures
     int out_fd=file_init(argv[3]);
 
     int sckt_fd=socket_init();
 
     struct sockaddr_in srvr;
 
-    connection_init(&srvr,port,ip_addr);
+    connection_init(&srvr,port,ip_addr,sckt_fd);
 
+    transport(&srvr,data_size,out_fd,sckt_fd);
+    
+    close(sckt_fd);
+    close(out_fd);
 
     return 0;
 }
